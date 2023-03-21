@@ -1,20 +1,18 @@
-##from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-def get_url(event_title, location):
+def get_url(event, location):
     # generate a url from title and position
-    site = 'https://www.eventbrite.ca/d/canada--ottawa/all-events/?q={}&location={}'
-    #'https://www.eventbrite.ca/d/canada--location = {}/event_title = {}'
-    url = site.format(event_title, location)
+    site = 'https://www.eventbrite.ca/d/canada--location={}/event={}/?'
+    url = site.format(event, location)
     return url
 
 def get_record(card):
-    event_title = card.find('div', class_='eds-event-card__formatted-name--is-clamped eds-event-card__formatted-name--is-clamped-three eds-text-weight--heavy').text.strip()
+    event_title = card.find('div', class_='eds-event-card__formatted-name--is-clamped').text.strip()
     event_location = card.find('div', class_ ='card-text--truncated__one').text.strip()
-    date = card.find('div', class_='eds-event-card-content__sub-title eds-text-color--primary-brand eds-l-pad-bot-1 eds-l-pad-top-2 eds-text-weight--heavy eds-text-bm').text.strip()
-    organizer_name = card.find('div', class_='eds-event-card__sub-content--organizer eds-text-color--ui-800 eds-text-weight--heavy card-text--truncated__two')
-    price = card.find('div', class_='eds-event-card-content__sub eds-text-bm eds-text-color--ui-600 eds-l-mar-top-1').text.strip()
+    date = card.find('div', class_='eds-event-card-content__sub-title').text.strip()
+    organizer_name = card.find('div', class_='eds-event-card__sub-content--organizer')
+    price = card.find('div', class_='eds-event-card-content__sub').text.strip()
 
     record = event_title + "\n\n" + event_location + "\n\n" + date + "\n\n" + str(organizer_name) + "\n\n" + price
 
